@@ -1,33 +1,50 @@
 #include "SmartRail.h"
+#include "Program.h"
+#include "Joystick.h"
 
 #include <SerialDebug.h>
 #include <VoltageReference.h>
 #include <AccelStepper.h>
 #include <LiquidCrystal.h>
 
+// stepper motor pins
 #define STEP_1_PIN 6
 #define STEP_2_PIN 5
 #define STEP_3_PIN 4
 #define STEP_4_PIN 3
 
+// joystick pins
 #define X_AXIS_PIN A6
 #define Y_AXIS_PIN A7
 #define BUTTON_PIN 2
 
+// lcd pins
+#define LCD_ENABLE_PIN 12
+#define LCD_SELECT_PIN 11
+#define LCD_DATA_1_PIN 10
+#define LCD_DATA_2_PIN 9
+#define LCD_DATA_3_PIN 8
+#define LCD_DATA_4_PIN 7
+#define DATA_5_PIN 5
+#define STEP_4_PIN 3
+
+
+
 AccelStepper stepper = AccelStepper(AccelStepper::FULL4WIRE, STEP_1_PIN, STEP_3_PIN, STEP_2_PIN, STEP_4_PIN);
 VoltageReference vRef = VoltageReference();
-LiquidCrystal lcd = LiquidCrystal(12, 11, 10, 9, 8, 7);
+LiquidCrystal lcd = LiquidCrystal(LCD_ENABLE_PIN, LCD_SELECT_PIN, LCD_DATA_1_PIN, LCD_DATA_2_PIN, LCD_DATA_3_PIN, LCD_DATA_4_PIN);
+Joystick joystick = Joystick();
 
 uint8_t index = 0;
 char* command;
 bool commandComplete = false;
 float acceleration = 100.0;
 
+Program programs[16];
+
 void setup() {
 	Serial.begin(9600);
-	pinMode(X_AXIS_PIN, INPUT);
-	pinMode(Y_AXIS_PIN, INPUT);
-	pinMode(BUTTON_PIN, INPUT);
+	joystick.begin(A6, A7, 2);
 	lcd.begin(16, 2);
 	lcd.print("ciao mamma");
 	stepper.setMaxSpeed(2000.0);
