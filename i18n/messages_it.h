@@ -5,13 +5,16 @@
  *      Author: Roberto Lo Giacco
  */
 
-#ifndef MESSAGES_H_
-#define MESSAGES_H_
+#ifndef MESSAGES_IT_H_
+#define MESSAGES_IT_H_
 
-#include <avr/pgmspace.h>
+#include "messages.h"
 
-PROGMEM const char* WELCOME = "Benvenuto in    Seconda linea";
+static const char PROGMEM welcome_1[] 			= "Welcome to";
+static const char PROGMEM welcome_2[] 			= "SmartRail";
+static const char PROGMEM manual_mode[] 		= "Manual  Mode";
+static const char PROGMEM demo_mode[] 			= "Demo  Mode";
+static const char PROGMEM const_speed_mode[] 	= "Constant Speed";
+static const char PROGMEM smooth_mode[]		 	= "Smoothed";
 
-
-
-#endif /* MESSAGES_H_ */
+#endif /* MESSAGES_IT_H_ */
