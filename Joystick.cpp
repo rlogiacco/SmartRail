@@ -6,6 +6,7 @@
  */
 
 #include "Joystick.h"
+#define SERIAL_DEBUG false
 #include <SerialDebug.h>
 
 Joystick::Joystick() {
@@ -20,14 +21,15 @@ void Joystick::begin(uint8_t x, uint8_t y, uint8_t button, uint8_t debounce) {
 	pinMode(x, INPUT);
 	pinMode(y, INPUT);
 	pinMode(button, INPUT_PULLUP);
-	buttonRef, buttonState = HIGH;
 	this->calibrate();
 }
 
 void Joystick::calibrate() {
 	xRef = analogRead(xPin);
 	yRef = analogRead(yPin);
-
+	buttonRef = digitalRead(buttonPin);
+	buttonState = buttonRef;
+	lastState = buttonRef;
 	DEBUG("calibrate", xRef, yRef, buttonRef);
 }
 
@@ -41,18 +43,25 @@ int16_t Joystick::y() {
 
 bool Joystick::button() {
 	uint8_t reading = digitalRead(buttonPin);
-	DEBUG(reading, buttonState);
-	if (reading != buttonState) {
+	DEBUG("digital read", reading, buttonState);
+	if (reading != lastState) {
+		DEBUG("debounce reset",lastDebounce, millis());
 		// reset the debouncing timer
 		lastDebounce = millis();
+		DEBUG("debounce resetted",lastDebounce, millis());
 	}
 
 	if ((millis() - lastDebounce) > debounce) {
+		DEBUG("debounce", millis() - lastDebounce, reading, buttonState);
 		// whatever the reading is at, it's been there for longer
 		// than the debounce delay, so take it as the actual current state:
 		if (reading != buttonState) {
+			DEBUG("changing", buttonState, reading);
 			buttonState = reading;
+			DEBUG("state changed", buttonState, reading);
 		}
 	}
+	DEBUG("---- returning", buttonState, buttonRef, buttonState != buttonRef,"\n\n");
+	lastState = reading;
 	return buttonState != buttonRef;
 }

@@ -28,7 +28,7 @@ private:
 	uint8_t xPin, yPin, buttonPin;
 	uint16_t xRef, yRef;
 	bool buttonState, buttonRef;
-	uint16_t lastDebounce, lastClick;
+	uint16_t lastDebounce, lastState, lastClick;
 	uint8_t debounce, duration, interval;
 };
 
