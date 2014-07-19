@@ -19,7 +19,7 @@ public:
 	void load();
 
 private:
-	Step* steps[16];
+	Step* steps[32];
 	uint8_t count;
 };
 

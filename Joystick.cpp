@@ -7,15 +7,16 @@
 
 #include "Joystick.h"
 
-Joystick::Joystick() {
-	// TODO Auto-generated constructor stub
+Joystick::Joystick() { }
 
-}
 void Joystick::begin(uint8_t x, uint8_t y, uint8_t button) {
 	this->_x = x;
 	this->_y = y;
 	this->_button = button;
 	this->calibrate();
+	pinMode(x, INPUT);
+	pinMode(y, INPUT);
+	pinMode(button, INPUT);
 }
 
 void Joystick::calibrate() {
