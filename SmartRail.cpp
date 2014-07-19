@@ -158,7 +158,7 @@ void loop() {
 		click();
 	}
 	DEBUG("function", functionIndex);
-	//functions[functionIndex]();
-	//clicked = false;
+	functions[functionIndex]();
+	clicked = false;
 }
 
