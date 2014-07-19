@@ -15,6 +15,7 @@ char buffer[16];
 enum Align {
 	CENTER, LEFT, RIGHT
 };
+
 inline void display(const PROGMEM char *str, uint8_t line, Align align = CENTER) {
 	for (int i = 0; i < 16; i++) {
 		lcd.setCursor(i, line);
@@ -36,4 +37,10 @@ inline void display(const PROGMEM char *str, uint8_t line, Align align = CENTER)
 	lcd.print(buffer);
 }
 
+inline void clear(uint8_t line) {
+	for (int i = 0; i < 16; i++) {
+		lcd.setCursor(i, line);
+		lcd.print(' ');
+	}
+}
 #endif /* MESSAGES_H_ */

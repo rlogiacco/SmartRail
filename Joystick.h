@@ -18,8 +18,7 @@ public:
 		LONG_CLICK,
 		DOUBLE_CLICK
 	};
-	Joystick();
-	void begin(uint8_t x, uint8_t y, uint8_t button = 255, uint8_t debounce = 50);
+	Joystick(uint8_t x, uint8_t y, uint8_t button = 255, uint8_t debounce = 50);
 	void calibrate();
 	int16_t x();
 	int16_t y();

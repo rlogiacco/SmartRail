@@ -8,18 +8,20 @@
 #include <LiquidCrystal.h>
 #include <Flash.h>
 
-// stepper motor pins
+// stepper motor
 #define STEP_1_PIN 6
 #define STEP_2_PIN 5
 #define STEP_3_PIN 4
 #define STEP_4_PIN 3
+AccelStepper stepper = AccelStepper(AccelStepper::FULL4WIRE, STEP_1_PIN, STEP_3_PIN, STEP_2_PIN, STEP_4_PIN);
 
-// joystick pins
+// joystick
 #define X_AXIS_PIN A6
 #define Y_AXIS_PIN A7
 #define BUTTON_PIN 2
+Joystick joystick = Joystick(X_AXIS_PIN, Y_AXIS_PIN, BUTTON_PIN);
 
-// lcd pins
+// lcd
 #define LCD_ENABLE_PIN 12
 #define LCD_SELECT_PIN 11
 #define LCD_DATA_1_PIN 10
@@ -28,11 +30,9 @@
 #define LCD_DATA_4_PIN 7
 #define DATA_5_PIN 5
 #define STEP_4_PIN 3
-
-AccelStepper stepper = AccelStepper(AccelStepper::FULL4WIRE, STEP_1_PIN, STEP_3_PIN, STEP_2_PIN, STEP_4_PIN);
-VoltageReference vRef = VoltageReference();
 LiquidCrystal lcd = LiquidCrystal(LCD_ENABLE_PIN, LCD_SELECT_PIN, LCD_DATA_1_PIN, LCD_DATA_2_PIN, LCD_DATA_3_PIN, LCD_DATA_4_PIN);
-Joystick joystick = Joystick();
+
+VoltageReference vRef = VoltageReference();
 
 #include "i18n/messages.h"
 #include "i18n/messages_it.h"
@@ -41,7 +41,6 @@ uint8_t index = 0;
 char* command;
 bool commandComplete = false;
 float acceleration = 100.0;
-uint16_t xCalibrate, yCalibrate;
 
 #define FUNCTIONS_SIZE 2
 uint8_t functionIndex = 0;
@@ -67,7 +66,6 @@ Program programs[16];
 
 void setup() {
 	SERIAL_DEBUG_SETUP(9600);
-	joystick.begin(X_AXIS_PIN, Y_AXIS_PIN, BUTTON_PIN);
 	joystick.calibrate();
 	stepper.setMaxSpeed(2000.0);
 	stepper.setSpeed(500.0);
@@ -92,26 +90,26 @@ void manual() {
 	display(manual_mode, 0);
 	while (!joystick.button()) {
 		int16_t x = joystick.x();
-		if (x > 50) {
-			//DEBUG("LEFT");
+		if (x > 25) {
 			stepper.move(10);
 			stepper.setMaxSpeed(1000);
 			stepper.setSpeed(abs(x));
-		} else if (x < -50) {
-			//DEBUG("RIGHT");
+		} else if (x < -25) {
 			stepper.move(-10);
 			stepper.setMaxSpeed(1000);
 			stepper.setSpeed(abs(x));
 		}
 
 		int16_t y = joystick.y();
-		if (y > 20) {
+		if (y > 25) {
 			acceleration += 10.0;
 			stepper.setAcceleration(acceleration);
-		} else if (y < -20) {
+		} else if (y < -25) {
 			acceleration -= 10.0;
 			stepper.setAcceleration(acceleration);
 		}
+		//DEBUG("manual","x",x,"y",y,"speed", abs(x), "accel", acceleration);
+
 		stepper.runSpeedToPosition();
 	}
 }
