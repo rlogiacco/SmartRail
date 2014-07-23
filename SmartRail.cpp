@@ -71,6 +71,9 @@ void setup() {
 	stepper.setSpeed(500.0);
 	stepper.setAcceleration(100.0);
 	lcd.begin(16, 2);
+	for (int i = 0; i < LCD_SYMBOLS_SIZE; i++) {
+		lcd.createChar(i, LCD_SYMBOLS[i]);
+	}
 	welcome();
 }
 
