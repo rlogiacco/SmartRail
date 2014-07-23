@@ -6,7 +6,6 @@
 #include <VoltageReference.h>
 #include <AccelStepper.h>
 #include <LiquidCrystal.h>
-#include <Flash.h>
 
 // stepper motor
 #define STEP_1_PIN 6
