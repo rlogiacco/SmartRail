@@ -9,6 +9,8 @@
 #define MESSAGES_H_
 
 #include <avr/pgmspace.h>
+#include <binary.h>
+#include <LiquidCrystal.h>
 
 char buffer[16];
 
@@ -28,7 +30,9 @@ uint8_t LCD_SYMBOLS[4][8] = {
 		{B00000,B10001,B10001,B10001,B10001,B10001,B00000}
 };
 
-inline void display(const PROGMEM char *str, uint8_t line, Align align = CENTER) {
+extern LiquidCrystal lcd;
+
+inline void display(const char *str, const uint8_t line, const Align align = CENTER) {
 	for (int i = 0; i < 16; i++) {
 		lcd.setCursor(i, line);
 		lcd.print(' ');
@@ -49,7 +53,7 @@ inline void display(const PROGMEM char *str, uint8_t line, Align align = CENTER)
 	lcd.print(buffer);
 }
 
-inline void clear(uint8_t line) {
+inline void clear(const uint8_t line) {
 	for (int i = 0; i < 16; i++) {
 		lcd.setCursor(i, line);
 		lcd.print(' ');

@@ -1,11 +1,9 @@
-#include "SmartRail.h"
-#include "Program.h"
-#include "Joystick.h"
-
-#include <SerialDebug.h>
-#include <VoltageReference.h>
 #include <AccelStepper.h>
+#include <FormattingSerialDebug.h>
+#include <VoltageReference.h>
 #include <LiquidCrystal.h>
+#include "Joystick.h"
+#include "Program.h"
 
 // stepper motor
 #define STEP_1_PIN 6
@@ -29,12 +27,13 @@ Joystick joystick = Joystick(X_AXIS_PIN, Y_AXIS_PIN, BUTTON_PIN);
 #define LCD_DATA_4_PIN 7
 #define DATA_5_PIN 5
 #define STEP_4_PIN 3
+
+#include "i18n/messages.h"
+#include "i18n/messages_it.h"
 LiquidCrystal lcd = LiquidCrystal(LCD_ENABLE_PIN, LCD_SELECT_PIN, LCD_DATA_1_PIN, LCD_DATA_2_PIN, LCD_DATA_3_PIN, LCD_DATA_4_PIN);
 
 VoltageReference vRef = VoltageReference();
 
-#include "i18n/messages.h"
-#include "i18n/messages_it.h"
 
 uint8_t index = 0;
 char* command;
@@ -157,8 +156,7 @@ void loop() {
 		DEBUG("joystick clicked");
 		click();
 	}
-	DEBUG("function", functionIndex);
+	DEBUG("function %u", functionIndex);
 	functions[functionIndex]();
 	clicked = false;
 }
-
